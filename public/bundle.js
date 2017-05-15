@@ -25489,21 +25489,20 @@
 	        return {
 	            todos: [{
 	                id: 1,
-	                text: "Walk the dog"
+	                text: "text"
 	            }, {
 	                id: 2,
-	                text: "Clean the yard"
-	            }, {
-	                id: 3,
-	                text: "Get swim"
-	            }, {
-	                id: 4,
-	                text: "Charge phone before get sleep"
-	            }, {
-	                id: 5,
-	                text: "Watch movie"
+	                text: 'Check the mail'
 	            }]
 	        };
+	    },
+	    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+	        console.log(prevState);
+	    },
+	    handleAddTodo: function handleAddTodo(text) {
+	        this.setState(function (prevState) {
+	            return {};
+	        });
 	    },
 	    render: function render() {
 	        var todos = this.state.todos;
@@ -25523,7 +25522,9 @@
 	            React.createElement(
 	                'div',
 	                { className: 'column medium-6 large-4 small-centered todo-app' },
-	                React.createElement(TodoList, { todos: todos })
+	                React.createElement(TodoSearch, null),
+	                React.createElement(TodoList, { todos: todos }),
+	                React.createElement(TodoAdd, { onNewTodo: this.handleAddTodo })
 	            )
 	        );
 	    }
@@ -25632,30 +25633,36 @@
 /* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(8);
 
 	var TodoAdd = React.createClass({
-	    displayName: "TodoAdd",
+	    displayName: 'TodoAdd',
 
 
+	    addTodo: function addTodo(e) {
+	        e.preventDefault();
+	        var newTodo = this.refs.addtodo.value;
+	        if (newTodo.length > 0) {
+	            this.refs.addtodo.value = '';
+	            this.props.onNewTodo(newTodo);
+	        } else {
+	            this.refs.addtodo.focus();
+	        }
+	    },
 	    render: function render() {
 	        return React.createElement(
-	            "div",
-	            { className: "add-todo" },
+	            'div',
+	            { className: 'add-todo' },
 	            React.createElement(
-	                "div",
-	                null,
-	                React.createElement("input", { type: "text", ref: "addtodo", placeholder: "What do you need to do?" })
-	            ),
-	            React.createElement(
-	                "div",
-	                null,
+	                'form',
+	                { action: '#', onSubmit: this.addTodo },
+	                React.createElement('input', { type: 'text', ref: 'addtodo', placeholder: 'What do you need to do?' }),
 	                React.createElement(
-	                    "button",
-	                    { className: "button primary expanded" },
-	                    "Add Todo"
+	                    'button',
+	                    { className: 'button primary expanded' },
+	                    'Add Todo'
 	                )
 	            )
 	        );
