@@ -13,11 +13,13 @@ var Todo = React.createClass({
             },{
                 id:2,
                 text:'Check the mail'
-            }]
+            }],
+            showCompleted: false,
+            searchText: ''
         };
     },
     componentDidUpdate: function (prevProps, prevState) {
-        console.log(prevState);
+        console.log(this.state.showCompleted,this.state.searchText);
     },
     handleAddTodo: function (text) {
         this.setState((prevState) => {
@@ -25,6 +27,12 @@ var Todo = React.createClass({
 
             };
         });
+    },
+    handleSearch: function (searchText, showCompleted) {
+      this.setState({
+          showCompleted: showCompleted,
+          searchText: searchText
+      });
     },
     render: function () {
         var {todos} = this.state;
@@ -34,7 +42,7 @@ var Todo = React.createClass({
                     <h1 className="page-title">Todo App</h1>
                 </div>
                 <div className="column medium-6 large-4 small-centered todo-app">
-                    <TodoSearch/>
+                    <TodoSearch onSearch={this.handleSearch}/>
                     <TodoList todos={todos}/>
                     <TodoAdd onNewTodo={this.handleAddTodo}/>
                 </div>

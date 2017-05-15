@@ -25493,15 +25493,23 @@
 	            }, {
 	                id: 2,
 	                text: 'Check the mail'
-	            }]
+	            }],
+	            showCompleted: false,
+	            searchText: ''
 	        };
 	    },
 	    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
-	        console.log(prevState);
+	        console.log(this.state.showCompleted, this.state.searchText);
 	    },
 	    handleAddTodo: function handleAddTodo(text) {
 	        this.setState(function (prevState) {
 	            return {};
+	        });
+	    },
+	    handleSearch: function handleSearch(searchText, showCompleted) {
+	        this.setState({
+	            showCompleted: showCompleted,
+	            searchText: searchText
 	        });
 	    },
 	    render: function render() {
@@ -25522,7 +25530,7 @@
 	            React.createElement(
 	                'div',
 	                { className: 'column medium-6 large-4 small-centered todo-app' },
-	                React.createElement(TodoSearch, null),
+	                React.createElement(TodoSearch, { onSearch: this.handleSearch }),
 	                React.createElement(TodoList, { todos: todos }),
 	                React.createElement(TodoAdd, { onNewTodo: this.handleAddTodo })
 	            )
@@ -25543,6 +25551,11 @@
 	var TodoSearch = React.createClass({
 	    displayName: "TodoSearch",
 
+	    handleOnChange: function handleOnChange() {
+	        var searchText = this.refs.searchText.value;
+	        var showCompleted = this.refs.showCompleted.checked;
+	        this.props.onSearch(searchText, showCompleted);
+	    },
 	    render: function render() {
 	        return React.createElement(
 	            "div",
@@ -25550,16 +25563,20 @@
 	            React.createElement(
 	                "div",
 	                null,
-	                React.createElement("input", { type: "text", ref: "search", placeholder: "Search todos" })
+	                React.createElement("input", { onChange: this.handleOnChange, type: "text", ref: "searchText", placeholder: "Search todos" })
 	            ),
 	            React.createElement(
 	                "div",
 	                null,
-	                React.createElement("input", { type: "checkbox" }),
 	                React.createElement(
-	                    "span",
-	                    { className: "chk-label" },
-	                    "Show completed todos"
+	                    "label",
+	                    null,
+	                    React.createElement("input", { oninpute: this.handleOnChange, ref: "showCompleted", type: "checkbox" }),
+	                    React.createElement(
+	                        "span",
+	                        { className: "chk-label" },
+	                        "Show completed todos"
+	                    )
 	                )
 	            )
 	        );
