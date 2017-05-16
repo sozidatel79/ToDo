@@ -25490,22 +25490,37 @@
 	    getInitialState: function getInitialState() {
 	        return {
 	            todos: [{
-	                id: this.getRandomId(7896524),
-	                text: ""
+	                id: this.getRandomId(),
+	                text: "Walk dog",
+	                completed: false
+	            }, {
+	                id: this.getRandomId(),
+	                text: "Feed cat",
+	                completed: true
+	            }, {
+	                id: this.getRandomId(),
+	                text: "Charge mobile phone",
+	                completed: true
+	            }, {
+	                id: this.getRandomId(),
+	                text: "Clean the yard",
+	                completed: false
 	            }],
 	            showCompleted: false,
 	            searchText: ''
 	        };
 	    },
-	    getRandomId: function getRandomId(num) {
+	    getRandomId: function getRandomId() {
+	        var num = 7896524;
 	        var random = Math.random() * num;
 	        return Math.floor(random);
 	    },
 	    handleAddTodo: function handleAddTodo(text) {
 	        this.setState({
 	            todos: [].concat(_toConsumableArray(this.state.todos), [{
-	                id: this.getRandomId(7962145),
-	                text: text
+	                id: this.getRandomId(),
+	                text: text,
+	                completed: false
 	            }])
 	        });
 	    },
@@ -25513,6 +25528,17 @@
 	        this.setState({
 	            showCompleted: showCompleted,
 	            searchText: searchText
+	        });
+	    },
+	    handleToggle: function handleToggle(id) {
+	        var updatedTodos = this.state.todos.map(function (todo) {
+	            if (todo.id == id) {
+	                todo.completed = !todo.completed;
+	            }
+	            return todo;
+	        });
+	        this.setState({
+	            todos: updatedTodos
 	        });
 	    },
 	    render: function render() {
@@ -25534,7 +25560,7 @@
 	                'div',
 	                { className: 'column medium-6 large-4 small-centered todo-app' },
 	                React.createElement(TodoSearch, { onSearch: this.handleSearch }),
-	                React.createElement(TodoList, { todos: todos }),
+	                React.createElement(TodoList, { onToggle: this.handleToggle, todos: todos }),
 	                React.createElement(TodoAdd, { onNewTodo: this.handleAddTodo })
 	            )
 	        );
@@ -25604,11 +25630,13 @@
 
 
 	    render: function render() {
+	        var _this = this;
+
 	        var todos = this.props.todos;
 
 	        var renderTodos = function renderTodos() {
 	            return todos.map(function (todo) {
-	                return React.createElement(Todo, _extends({ key: todo.id }, todo));
+	                return React.createElement(Todo, _extends({ key: todo.id }, todo, { onToggle: _this.props.onToggle }));
 	            });
 	        };
 	        return React.createElement(
@@ -25632,14 +25660,21 @@
 	var Todo = React.createClass({
 	    displayName: "Todo",
 
+
 	    render: function render() {
+	        var _this = this;
+
 	        var _props = this.props,
 	            text = _props.text,
-	            id = _props.id;
+	            id = _props.id,
+	            completed = _props.completed;
 
 	        return React.createElement(
 	            "div",
-	            { className: "todo" },
+	            { onClick: function onClick() {
+	                    _this.props.onToggle(id);
+	                } },
+	            React.createElement("input", { type: "checkbox", checked: completed }),
 	            text
 	        );
 	    }
