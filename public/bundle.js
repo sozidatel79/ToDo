@@ -25639,7 +25639,8 @@
 	            { className: "todo" },
 	            id,
 	            " ",
-	            text
+	            text,
+	            " - Anton !"
 	        );
 	    }
 	});
