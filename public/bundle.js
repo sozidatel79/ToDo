@@ -25477,6 +25477,8 @@
 
 	'use strict';
 
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	var React = __webpack_require__(8);
 	var TodoSearch = __webpack_require__(230);
 	var TodoList = __webpack_require__(231);
@@ -25488,22 +25490,23 @@
 	    getInitialState: function getInitialState() {
 	        return {
 	            todos: [{
-	                id: 1,
-	                text: "text"
-	            }, {
-	                id: 2,
-	                text: 'Check the mail'
+	                id: this.getRandomId(7896524),
+	                text: ""
 	            }],
 	            showCompleted: false,
 	            searchText: ''
 	        };
 	    },
-	    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
-	        console.log(this.state.showCompleted, this.state.searchText);
+	    getRandomId: function getRandomId(num) {
+	        var random = Math.random() * num;
+	        return Math.floor(random);
 	    },
 	    handleAddTodo: function handleAddTodo(text) {
-	        this.setState(function (prevState) {
-	            return {};
+	        this.setState({
+	            todos: [].concat(_toConsumableArray(this.state.todos), [{
+	                id: this.getRandomId(7962145),
+	                text: text
+	            }])
 	        });
 	    },
 	    handleSearch: function handleSearch(searchText, showCompleted) {
@@ -25637,8 +25640,6 @@
 	        return React.createElement(
 	            "div",
 	            { className: "todo" },
-	            id,
-	            " ",
 	            text
 	        );
 	    }

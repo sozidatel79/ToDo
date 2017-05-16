@@ -8,24 +8,26 @@ var Todo = React.createClass({
     getInitialState:function () {
         return {
             todos: [{
-                id: 1,
-                text : "text"
-            },{
-                id:2,
-                text:'Check the mail'
+                id: this.getRandomId(7896524),
+                text : ""
             }],
             showCompleted: false,
             searchText: ''
         };
     },
-    componentDidUpdate: function (prevProps, prevState) {
-        console.log(this.state.showCompleted,this.state.searchText);
+    getRandomId: function (num) {
+        var random = Math.random()*num;
+        return Math.floor(random);
     },
     handleAddTodo: function (text) {
-        this.setState((prevState) => {
-            return {
-
-            };
+        this.setState({
+            todos:[
+                ...this.state.todos,
+                {
+                    id: this.getRandomId(7962145),
+                    text:text
+                }
+            ]
         });
     },
     handleSearch: function (searchText, showCompleted) {
