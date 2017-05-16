@@ -1,32 +1,20 @@
 var React = require('react');
 var TodoSearch = require('TodoSearch');
 var TodoList = require('TodoList');
-var TodoAdd = require('app/components/TodoAdd');
+var TodoAdd = require('TodoAdd');
+var TodoAPI = require('TodoAPI');
 
 
 var Todo = React.createClass({
     getInitialState:function () {
         return {
-            todos: [{
-                id: this.getRandomId(),
-                text : "Walk dog",
-                completed: false
-            },{
-                id: this.getRandomId(),
-                text : "Feed cat",
-                completed: true
-            },{
-                id: this.getRandomId(),
-                text : "Charge mobile phone",
-                completed: true
-            },{
-                id: this.getRandomId(),
-                text : "Clean the yard",
-                completed: false
-            }],
+            todos: TodoAPI.getTodos(),
             showCompleted: false,
             searchText: ''
         };
+    },
+    componentDidUpdate: function () {
+        TodoAPI.setTodos(this.state.todos);
     },
     getRandomId: function () {
         var num = 7896524;
@@ -54,7 +42,7 @@ var Todo = React.createClass({
     handleToggle: function (id) {
        var updatedTodos = this.state.todos.map((todo) => {
            if(todo.id == id){
-               todo.completed = !todo.completed; 
+               todo.completed = !todo.completed;
            }
            return todo;
        });

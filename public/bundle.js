@@ -106,11 +106,11 @@
 	var TodoApp = __webpack_require__(229);
 
 	// Load Foundation
-	__webpack_require__(234);
+	__webpack_require__(235);
 	$(document).foundation();
 
 	//App Styles
-	__webpack_require__(238);
+	__webpack_require__(239);
 
 	ReactDOM.render(React.createElement(TodoApp, null), document.querySelector('#app'));
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
@@ -25483,32 +25483,20 @@
 	var TodoSearch = __webpack_require__(230);
 	var TodoList = __webpack_require__(231);
 	var TodoAdd = __webpack_require__(233);
+	var TodoAPI = __webpack_require__(234);
 
 	var Todo = React.createClass({
 	    displayName: 'Todo',
 
 	    getInitialState: function getInitialState() {
 	        return {
-	            todos: [{
-	                id: this.getRandomId(),
-	                text: "Walk dog",
-	                completed: false
-	            }, {
-	                id: this.getRandomId(),
-	                text: "Feed cat",
-	                completed: true
-	            }, {
-	                id: this.getRandomId(),
-	                text: "Charge mobile phone",
-	                completed: true
-	            }, {
-	                id: this.getRandomId(),
-	                text: "Clean the yard",
-	                completed: false
-	            }],
+	            todos: TodoAPI.getTodos(),
 	            showCompleted: false,
 	            searchText: ''
 	        };
+	    },
+	    componentDidUpdate: function componentDidUpdate() {
+	        TodoAPI.setTodos(this.state.todos);
 	    },
 	    getRandomId: function getRandomId() {
 	        var num = 7896524;
@@ -25728,13 +25716,37 @@
 /* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	var $ = __webpack_require__(7);
+	module.exports = {
+	    setTodos: function setTodos(todos) {
+	        if ($.isArray(todos)) {
+	            localStorage.setItem('todos', JSON.stringify(todos));
+	            return todos;
+	        }
+	    },
+	    getTodos: function getTodos() {
+	        var stringTodos = localStorage.getItem('todos');
+	        var todos = [];
+	        try {
+	            todos = JSON.parse(stringTodos);
+	        } catch (e) {}
+	        return $.isArray(todos) ? todos : [];
+	    }
+	};
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(235);
+	var content = __webpack_require__(236);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(237)(content, {});
+	var update = __webpack_require__(238)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -25751,10 +25763,10 @@
 	}
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(236)();
+	exports = module.exports = __webpack_require__(237)();
 	// imports
 
 
@@ -25765,7 +25777,7 @@
 
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports) {
 
 	/*
@@ -25821,7 +25833,7 @@
 
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -26073,16 +26085,16 @@
 
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(239);
+	var content = __webpack_require__(240);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(237)(content, {});
+	var update = __webpack_require__(238)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -26099,10 +26111,10 @@
 	}
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(236)();
+	exports = module.exports = __webpack_require__(237)();
 	// imports
 
 
