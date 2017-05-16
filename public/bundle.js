@@ -25554,7 +25554,7 @@
 	    handleOnChange: function handleOnChange() {
 	        var searchText = this.refs.searchText.value;
 	        var showCompleted = this.refs.showCompleted.checked;
-	        this.props.onSearch(searchText, showCompleted);
+	        this.props.onSearch(showCompleted, searchText);
 	    },
 	    render: function render() {
 	        return React.createElement(
@@ -25563,7 +25563,7 @@
 	            React.createElement(
 	                "div",
 	                null,
-	                React.createElement("input", { onChange: this.handleOnChange, type: "text", ref: "searchText", placeholder: "Search todos" })
+	                React.createElement("input", { id: "schtext", onChange: this.handleOnChange, type: "text", ref: "searchText", placeholder: "Search todos" })
 	            ),
 	            React.createElement(
 	                "div",
@@ -25571,7 +25571,7 @@
 	                React.createElement(
 	                    "label",
 	                    null,
-	                    React.createElement("input", { oninpute: this.handleOnChange, ref: "showCompleted", type: "checkbox" }),
+	                    React.createElement("input", { onChange: this.handleOnChange, ref: "showCompleted", type: "checkbox" }),
 	                    React.createElement(
 	                        "span",
 	                        { className: "chk-label" },

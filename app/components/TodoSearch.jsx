@@ -4,17 +4,17 @@ var TodoSearch = React.createClass({
     handleOnChange: function () {
       var searchText = this.refs.searchText.value;
       var showCompleted = this.refs.showCompleted.checked;
-      this.props.onSearch(searchText, showCompleted);
+      this.props.onSearch(showCompleted, searchText);
     },
     render: function () {
         return (
             <div className="todo-search">
                 <div>
-                    <input onChange={this.handleOnChange} type="text" ref='searchText' placeholder="Search todos"/>
+                    <input id="schtext" onChange={this.handleOnChange} type="text" ref='searchText' placeholder="Search todos"/>
                 </div>
                 <div>
                     <label>
-                        <input oninpute={this.handleOnChange}  ref='showCompleted' type="checkbox"/>
+                        <input onChange={this.handleOnChange}  ref='showCompleted' type="checkbox"/>
                         <span className="chk-label">Show completed todos</span>
                     </label>
                 </div>
