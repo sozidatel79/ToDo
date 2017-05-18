@@ -41,7 +41,6 @@ module.exports = {
                return todo;
            }
         });
-
         return filteredTodos;
     }
 };

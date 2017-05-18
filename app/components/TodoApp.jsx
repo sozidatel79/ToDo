@@ -3,6 +3,7 @@ var TodoSearch = require('TodoSearch');
 var TodoList = require('TodoList');
 var TodoAdd = require('TodoAdd');
 var TodoAPI = require('TodoAPI');
+var Moment = require('moment');
 
 
 var Todo = React.createClass({
@@ -27,8 +28,10 @@ var Todo = React.createClass({
                 ...this.state.todos,
                 {
                     id: this.getRandomId(),
-                    text:text,
-                    completed: false
+                    text: text,
+                    completed: false,
+                    createdAt: Moment().unix(),
+                    completedAt: undefined
                 }
             ]
         });
@@ -43,6 +46,7 @@ var Todo = React.createClass({
        var updatedTodos = this.state.todos.map((todo) => {
            if(todo.id == id){
                todo.completed = !todo.completed;
+               todo.completedAt = (todo.completed) ? Moment().unix() : undefined;
            }
            return todo;
        });
