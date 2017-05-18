@@ -19,5 +19,5 @@ In order to run tests
 2. Run 'npm test'
 --------------------------------------------
 Live Demo: 
-<a target='_blank' href='http://secret-spire-29717.herokuapp.com/#/?_k=3s5ai8'>React JS ToDo Application</a>
+<a target='_blank' href='http://artodo.herokuapp.com/'>React JS ToDo Application</a>
 --------------------------------------
