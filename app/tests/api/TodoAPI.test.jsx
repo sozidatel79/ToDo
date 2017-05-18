@@ -47,4 +47,39 @@ describe('TodoAPI', () => {
         localStorage.setItem('todos', JSON.stringify(todos));
         expect(TodoAPI.getTodos()).toEqual(todos);
     });
+
+    describe('Filter Todos', () => {
+        var todos =[{
+            id:'123123123',
+            text: "Hello",
+            completed:true
+        },{
+            id:'456465456',
+            text: "Hello 2",
+            completed:false
+        },{
+            id:'456465456',
+            text: "Hello 2",
+            completed:false
+        }];
+
+        it('should return All todos if showCompleted is true', () => {
+            var filteredTodos = TodoAPI.filterTodos(todos, true, '');
+            expect(filteredTodos.length).toBe(3);
+        });
+
+        it('should return not completed todos only if showCompleted is false', () => {
+            var filteredTodos = TodoAPI.filterTodos(todos, false, '');
+            expect(filteredTodos.length).toBe(2);
+        });
+
+        it('should sort by completed status', () => {
+            var filteredTodos = TodoAPI.filterTodos(todos, true, '');
+            expect(filteredTodos[0].completed).toBe(false);
+        });
+
+    });
+
+
+
 });

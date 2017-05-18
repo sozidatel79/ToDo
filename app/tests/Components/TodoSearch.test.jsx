@@ -18,7 +18,7 @@ describe('Todo Search', () => {
         var todoSearch = TestUtils.renderIntoDocument(<TodoSearch onSearch={spy}/>);
         todoSearch.refs.searchText.value = 'test'
         TestUtils.Simulate.change(todoSearch.refs.searchText);
-        expect(spy).toHaveBeenCalledWith(false, 'test');
+        expect(spy).toHaveBeenCalledWith('test', false);
     });
 
     it('should call onSearch with proper checked value input text', () => {
@@ -26,7 +26,7 @@ describe('Todo Search', () => {
         var todoSearch = TestUtils.renderIntoDocument(<TodoSearch onSearch={spy}/>);
         todoSearch.refs.showCompleted.checked = true;
         TestUtils.Simulate.change(todoSearch.refs.showCompleted);
-        expect(spy).toHaveBeenCalledWith(true, '');
+        expect(spy).toHaveBeenCalledWith('', true);
     });
 
 });

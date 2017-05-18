@@ -25530,8 +25530,12 @@
 	        });
 	    },
 	    render: function render() {
-	        var todos = this.state.todos;
+	        var _state = this.state,
+	            todos = _state.todos,
+	            showCompleted = _state.showCompleted,
+	            searchText = _state.searchText;
 
+	        var filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
 	        return React.createElement(
 	            'div',
 	            { className: 'row' },
@@ -25548,7 +25552,7 @@
 	                'div',
 	                { className: 'column medium-6 large-4 small-centered todo-app' },
 	                React.createElement(TodoSearch, { onSearch: this.handleSearch }),
-	                React.createElement(TodoList, { onToggle: this.handleToggle, todos: todos }),
+	                React.createElement(TodoList, { onToggle: this.handleToggle, todos: filteredTodos }),
 	                React.createElement(TodoAdd, { onNewTodo: this.handleAddTodo })
 	            )
 	        );
@@ -25571,7 +25575,7 @@
 	    handleOnChange: function handleOnChange() {
 	        var searchText = this.refs.searchText.value;
 	        var showCompleted = this.refs.showCompleted.checked;
-	        this.props.onSearch(showCompleted, searchText);
+	        this.props.onSearch(searchText, showCompleted);
 	    },
 	    render: function render() {
 	        return React.createElement(
@@ -25580,7 +25584,7 @@
 	            React.createElement(
 	                "div",
 	                null,
-	                React.createElement("input", { id: "schtext", onChange: this.handleOnChange, type: "text", ref: "searchText", placeholder: "Search todos" })
+	                React.createElement("input", { onChange: this.handleOnChange, type: "text", ref: "searchText", placeholder: "Search todos" })
 	            ),
 	            React.createElement(
 	                "div",
@@ -25733,6 +25737,34 @@
 	            todos = JSON.parse(stringTodos);
 	        } catch (e) {}
 	        return $.isArray(todos) ? todos : [];
+	    },
+	    filterTodos: function filterTodos(todos, showCompleted, searchText) {
+	        var filteredTodos = todos;
+
+	        filteredTodos = filteredTodos.filter(function (todo) {
+	            return !todo.completed || showCompleted;
+	        });
+
+	        filteredTodos.sort(function (a, b) {
+	            if (!a.completed && b.completed) {
+	                return -1;
+	            } else if (a.completed && !b.completed) {
+	                return 1;
+	            } else {
+	                return 0;
+	            }
+	        });
+
+	        filteredTodos = filteredTodos.filter(function (todo) {
+	            var text = todo.text.toLowerCase();
+	            if (searchText == '') {
+	                return todo;
+	            } else if (text.indexOf(searchText) > -1) {
+	                return todo;
+	            }
+	        });
+
+	        return filteredTodos;
 	    }
 	};
 
