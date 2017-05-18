@@ -25555,9 +25555,13 @@
 	            React.createElement(
 	                'div',
 	                { className: 'column medium-6 large-4 small-centered todo-app' },
-	                React.createElement(TodoSearch, { onSearch: this.handleSearch }),
-	                React.createElement(TodoList, { onToggle: this.handleToggle, todos: filteredTodos }),
-	                React.createElement(TodoAdd, { onNewTodo: this.handleAddTodo })
+	                React.createElement(
+	                    'div',
+	                    { className: 'container' },
+	                    React.createElement(TodoSearch, { onSearch: this.handleSearch }),
+	                    React.createElement(TodoList, { onToggle: this.handleToggle, todos: filteredTodos }),
+	                    React.createElement(TodoAdd, { onNewTodo: this.handleAddTodo })
+	                )
 	            )
 	        );
 	    }
@@ -25631,6 +25635,13 @@
 	        var todos = this.props.todos;
 
 	        var renderTodos = function renderTodos() {
+	            if (todos.length == 0) {
+	                return React.createElement(
+	                    'p',
+	                    { className: 'no-todo-message' },
+	                    'Nothing to do'
+	                );
+	            }
 	            return todos.map(function (todo) {
 	                return React.createElement(Todo, _extends({ key: todo.id }, todo, { onToggle: _this.props.onToggle }));
 	            });
@@ -25668,6 +25679,7 @@
 	            createdAt = _props.createdAt,
 	            completedAt = _props.completedAt;
 
+	        var todoClassName = completed ? 'todo todo-completed' : 'todo';
 	        var renderDate = function renderDate() {
 	            var message = !completed ? 'Created: ' : 'Completed: ';
 	            var timeStamp = !completed ? createdAt : completedAt;
@@ -25676,19 +25688,27 @@
 	        };
 	        return React.createElement(
 	            'div',
-	            { onClick: function onClick() {
+	            { className: todoClassName, onClick: function onClick() {
 	                    _this.props.onToggle(id);
 	                } },
-	            React.createElement('input', { type: 'checkbox', checked: completed }),
 	            React.createElement(
-	                'p',
+	                'div',
 	                null,
-	                text
+	                React.createElement('input', { type: 'checkbox', checked: completed })
 	            ),
 	            React.createElement(
-	                'p',
+	                'div',
 	                null,
-	                renderDate()
+	                React.createElement(
+	                    'p',
+	                    null,
+	                    text
+	                ),
+	                React.createElement(
+	                    'p',
+	                    { className: 'todo-subtext' },
+	                    renderDate()
+	                )
 	            )
 	        );
 	    }
@@ -39660,7 +39680,7 @@
 
 
 	// module
-	exports.push([module.id, ".page-title {\n  margin-top: 40px;\n  color: lightslategray;\n  text-align: center; }\n", ""]);
+	exports.push([module.id, ".todo {\n  display: flex;\n  cursor: pointer;\n  align-items: center;\n  padding: 1rem;\n  transition: background 0.5s ease; }\n  .todo p, .todo input {\n    margin: 0; }\n  .todo > :first-child {\n    margin-right: 1rem; }\n  .todo:hover {\n    background: #f0f0f0; }\n\n.todo-completed p, .todo-completed .todo-subtext {\n  color: #ccc;\n  text-decoration: line-through; }\n\n.todo-subtext {\n  color: #999; }\n\n.add-todo {\n  padding: 1rem 1rem 0 1rem;\n  border-top: 1px solid #eeeeee; }\n\n.no-todo-message {\n  color: lightslategray;\n  margin: 2rem auto;\n  text-align: center; }\n\n.todo-search {\n  border-bottom: 1px solid #eeeeee;\n  padding: 1rem; }\n  .todo-search label {\n    cursor: pointer;\n    font-size: 1rem; }\n  .todo-search > :last-child {\n    display: flex;\n    align-items: center; }\n\n.page-title {\n  margin-top: 40px;\n  margin-bottom: 40px;\n  color: lightslategray;\n  text-align: center; }\n\n.container {\n  background: #fafafa;\n  border: 1px solid #eeeeee;\n  border-radius: 5px;\n  padding: 0;\n  margin-bottom: 20px; }\n", ""]);
 
 	// exports
 
