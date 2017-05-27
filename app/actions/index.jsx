@@ -24,9 +24,3 @@ export var addTodoAction = (todo) => {
         todo
     };
 };
-
-export var getRandomId = () => {
-    var num = 7896524;
-    var random = Math.random()*num;
-    return Math.floor(random);
-};
