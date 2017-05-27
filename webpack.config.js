@@ -27,6 +27,9 @@ module.exports = {
     ],
     alias: {
         ApplicationStyles: 'public/styles/app.scss',
+        actions: 'app/actions/index.jsx',
+        reducers: 'app/reducers/index.jsx',
+        store: 'app/actions/index.jsx',
     },
     extensions: ['', '.js', '.jsx']
   },
