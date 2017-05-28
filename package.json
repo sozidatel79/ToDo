@@ -1,27 +1,19 @@
 {
-  "name": "timer",
+  "name": "TodoApp",
   "version": "1.0.0",
-  "description": "education",
+  "description": "Simple react app",
   "main": "index.js",
   "scripts": {
     "test": "karma start",
-    "start": "node server.js",
-    "phr": "git push heroku master"
+    "start": "node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sozidatel79/rct.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/sozidatel79/rct/issues"
-  },
-  "homepage": "https://github.com/sozidatel79/rct#readme",
+  "author": "Anton Rotshtein",
+  "license": "MIT",
   "dependencies": {
-    "axios": "^0.16.1",
+    "axios": "^0.9.1",
     "express": "^4.13.4",
     "react": "^0.14.7",
+    "react-addons-test-utils": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-router": "^2.0.0"
   },
@@ -32,6 +24,7 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "css-loader": "^0.23.1",
+    "deep-freeze-strict": "^1.1.1",
     "expect": "^1.14.0",
     "foundation-sites": "^6.2.0",
     "jquery": "^2.2.1",
@@ -42,11 +35,12 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
     "mocha": "^2.4.5",
-    "moment": "^2.13.0",
-    "node-sass": "^4.5.2",
-    "react-addons-test-utils": "^0.14.6",
+    "moment": "^2.12.0",
+    "node-sass": "^3.4.2",
+    "node-uuid": "^1.4.7",
+    "react-redux": "^4.4.1",
     "redux": "^3.3.1",
-    "sass-loader": "^6.0.5",
+    "sass-loader": "^3.1.2",
     "script-loader": "^0.6.1",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.13"

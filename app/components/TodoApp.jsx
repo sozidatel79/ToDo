@@ -1,9 +1,12 @@
 var React = require('react');
-var TodoSearch = require('TodoSearch');
-var TodoList = require('TodoList');
-var TodoAdd = require('TodoAdd');
+import TodoSearch from 'TodoSearch';
+import TodoList from 'TodoList';
+import TodoAdd from 'TodoAdd';
 var TodoAPI = require('TodoAPI');
 var Moment = require('moment');
+var uuid = require('node-uuid');
+var {connect} = require('react-redux');
+
 
 
 var Todo = React.createClass({
@@ -17,43 +20,6 @@ var Todo = React.createClass({
     componentDidUpdate: function () {
         TodoAPI.setTodos(this.state.todos);
     },
-    getRandomId: function () {
-        var num = 7896524;
-        var random = Math.random()*num;
-        return Math.floor(random);
-    },
-    handleAddTodo: function (text) {
-        this.setState({
-            todos:[
-                ...this.state.todos,
-                {
-                    id: this.getRandomId(),
-                    text: text,
-                    completed: false,
-                    createdAt: Moment().unix(),
-                    completedAt: undefined
-                }
-            ]
-        });
-    },
-    handleSearch: function (searchText, showCompleted) {
-      this.setState({
-          showCompleted: showCompleted,
-          searchText: searchText
-      });
-    },
-    handleToggle: function (id) {
-       var updatedTodos = this.state.todos.map((todo) => {
-           if(todo.id == id){
-               todo.completed = !todo.completed;
-               todo.completedAt = (todo.completed) ? Moment().unix() : undefined;
-           }
-           return todo;
-       });
-       this.setState({
-           todos:updatedTodos
-       });
-    },
     render: function () {
         var {todos, showCompleted, searchText} = this.state;
         var filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
@@ -64,9 +30,9 @@ var Todo = React.createClass({
                 </div>
                 <div className="column medium-6 large-4 small-centered todo-app">
                     <div className="container">
-                        <TodoSearch onSearch={this.handleSearch}/>
-                        <TodoList onToggle={this.handleToggle} todos={filteredTodos}/>
-                        <TodoAdd onNewTodo={this.handleAddTodo}/>
+                        <TodoSearch/>
+                        <TodoList/>
+                        <TodoAdd/>
                     </div>
                 </div>
             </div>
@@ -74,4 +40,4 @@ var Todo = React.createClass({
     }
 });
 
-module.exports = Todo;
+module.exports = connect()(Todo);
