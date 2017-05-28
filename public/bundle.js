@@ -110,11 +110,15 @@
 	var _require2 = __webpack_require__(231),
 	    Provider = _require2.Provider;
 
+	var todoAPI = __webpack_require__(431);
 	store.subscribe(function () {
-	    console.log('New State: ', store.getState());
+	    var state = store.getState();
+	    todoAPI.setTodos(state.todos);
+	    console.log('New State: ', state);
 	});
 
-	//store.dispatch(actions.addTodo('fuck'));
+	var initialTodos = todoAPI.getTodos();
+	store.dispatch(actions.addTodos(initialTodos));
 
 	// Load Foundation
 	__webpack_require__(424);
@@ -25507,8 +25511,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var React = __webpack_require__(8);
-
-	var TodoAPI = __webpack_require__(361);
 	var Moment = __webpack_require__(257);
 	var uuid = __webpack_require__(362);
 
@@ -25518,23 +25520,8 @@
 	var Todo = React.createClass({
 	    displayName: 'Todo',
 
-	    getInitialState: function getInitialState() {
-	        return {
-	            todos: TodoAPI.getTodos(),
-	            showCompleted: false,
-	            searchText: ''
-	        };
-	    },
-	    componentDidUpdate: function componentDidUpdate() {
-	        TodoAPI.setTodos(this.state.todos);
-	    },
-	    render: function render() {
-	        var _state = this.state,
-	            todos = _state.todos,
-	            showCompleted = _state.showCompleted,
-	            searchText = _state.searchText;
 
-	        var filteredTodos = TodoAPI.filterTodos(todos, showCompleted, searchText);
+	    render: function render() {
 	        return React.createElement(
 	            'div',
 	            { className: 'row' },
@@ -25580,14 +25567,17 @@
 
 	var actions = __webpack_require__(254);
 
-	var TodoSearch = React.createClass({
+	var TodoSearch = exports.TodoSearch = React.createClass({
 	    displayName: 'TodoSearch',
 
 
 	    render: function render() {
 	        var _this = this;
 
-	        var dispatch = this.props.dispatch;
+	        var _props = this.props,
+	            showCompleted = _props.showCompleted,
+	            searchText = _props.searchText,
+	            dispatch = _props.dispatch;
 
 	        return React.createElement(
 	            'div',
@@ -25595,7 +25585,7 @@
 	            React.createElement(
 	                'div',
 	                null,
-	                React.createElement('input', { onChange: function onChange() {
+	                React.createElement('input', { value: searchText, onChange: function onChange() {
 	                        dispatch(actions.setSearchText(_this.refs.searchText.value));
 	                    }, type: 'text', ref: 'searchText', placeholder: 'Search todos' })
 	            ),
@@ -25605,7 +25595,7 @@
 	                React.createElement(
 	                    'label',
 	                    null,
-	                    React.createElement('input', { onChange: function onChange() {
+	                    React.createElement('input', { checked: showCompleted, onChange: function onChange() {
 	                            dispatch(actions.toggleShowCompleted());
 	                        }, ref: 'showCompleted', type: 'checkbox' }),
 	                    React.createElement(
@@ -25619,7 +25609,12 @@
 	    }
 	});
 
-	exports.default = connect()(TodoSearch);
+	exports.default = connect(function (state) {
+	    return {
+	        showCompleted: state.showCompleted,
+	        searchText: state.searchText
+	    };
+	})(TodoSearch);
 
 /***/ }),
 /* 231 */
@@ -27030,6 +27025,13 @@
 	  };
 	};
 
+	var addTodos = exports.addTodos = function addTodos(todos) {
+	  return {
+	    type: 'ADD_TODOS',
+	    todos: todos
+	  };
+	};
+
 /***/ }),
 /* 255 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -27044,13 +27046,16 @@
 	    connect = _require.connect;
 
 	var Todo = __webpack_require__(256);
-
+	var TodoAPI = __webpack_require__(361);
 	var TodoList = React.createClass({
 	    displayName: 'TodoList',
 
 
 	    render: function render() {
-	        var todos = this.props.todos;
+	        var _props = this.props,
+	            todos = _props.todos,
+	            searchText = _props.searchText,
+	            showCompleted = _props.showCompleted;
 
 	        var renderTodos = function renderTodos() {
 	            if (todos.length == 0) {
@@ -27060,7 +27065,7 @@
 	                    'Nothing to do'
 	                );
 	            }
-	            return todos.map(function (todo) {
+	            return TodoAPI.filterTodos(todos, showCompleted, searchText).map(function (todo) {
 	                return React.createElement(Todo, _extends({ key: todo.id }, todo));
 	            });
 	        };
@@ -27073,9 +27078,7 @@
 	});
 
 	module.exports = connect(function (state) {
-	    return {
-	        todos: state.todos
-	    };
+	    return state;
 	})(TodoList);
 
 /***/ }),
@@ -49520,6 +49523,8 @@
 	          return todo;
 	        }
 	      });
+	    case 'ADD_TODOS':
+	      return [].concat(_toConsumableArray(state), _toConsumableArray(action.todos));
 	    default:
 	      return state;
 	  }
@@ -49912,6 +49917,58 @@
 
 	// exports
 
+
+/***/ }),
+/* 430 */,
+/* 431 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var $ = __webpack_require__(7);
+	module.exports = {
+	    setTodos: function setTodos(todos) {
+	        if ($.isArray(todos)) {
+	            localStorage.setItem('todos', JSON.stringify(todos));
+	            return todos;
+	        }
+	    },
+	    getTodos: function getTodos() {
+	        var stringTodos = localStorage.getItem('todos');
+	        var todos = [];
+	        try {
+	            todos = JSON.parse(stringTodos);
+	        } catch (e) {}
+	        return $.isArray(todos) ? todos : [];
+	    },
+	    filterTodos: function filterTodos(todos, showCompleted, searchText) {
+	        var filteredTodos = todos;
+
+	        filteredTodos = filteredTodos.filter(function (todo) {
+	            return !todo.completed || showCompleted;
+	        });
+
+	        filteredTodos.sort(function (a, b) {
+	            if (!a.completed && b.completed) {
+	                return -1;
+	            } else if (a.completed && !b.completed) {
+	                return 1;
+	            } else {
+	                return 0;
+	            }
+	        });
+
+	        filteredTodos = filteredTodos.filter(function (todo) {
+	            var text = todo.text.toLowerCase();
+	            if (searchText == '') {
+	                return todo;
+	            } else if (text.indexOf(searchText) > -1) {
+	                return todo;
+	            }
+	        });
+	        return filteredTodos;
+	    }
+	};
 
 /***/ })
 /******/ ]);

@@ -5,12 +5,15 @@ var TodoApp = require('TodoApp');
 var actions = require('actions');
 var store = require('store').configure();
 var {Provider} = require('react-redux');
-
+var todoAPI = require('todoAPI');
 store.subscribe(() => {
-    console.log('New State: ', store.getState());
+    var state = store.getState();
+    todoAPI.setTodos(state.todos);
+    console.log('New State: ', state);
 });
 
-//store.dispatch(actions.addTodo('fuck'));
+var initialTodos = todoAPI.getTodos();
+store.dispatch(actions.addTodos(initialTodos));
 
 // Load Foundation
 require('style!css!foundation-sites/dist/css/foundation.min.css');
